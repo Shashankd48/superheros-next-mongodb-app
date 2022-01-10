@@ -1,3 +1,6 @@
 module.exports = {
-  reactStrictMode: true,
-}
+   reactStrictMode: true,
+   env: {
+      MONGO_URI: "mongodb://localhost:27017/superheros",
+   },
+};
