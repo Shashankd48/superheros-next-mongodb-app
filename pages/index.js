@@ -72,6 +72,7 @@ function Home({ heros = [] }) {
 
 export async function getServerSideProps(context) {
    const data = await getHeros();
+   console.log("log: Data", data);
    const heros = data && !data.error ? data.heros : [];
 
    return {
