@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import { Fragment } from "react";
+import config from "../config";
 
 function Home({ heros = [] }) {
    return (
@@ -53,18 +54,17 @@ function Home({ heros = [] }) {
    );
 }
 
-// Old way of doing SSR in Nextjs
-// Home.getInitialProps = async () => {
-//    const res = await axios("http://localhost:3000/api/hero");
-//    console.log(res.data);
-//    return {};
-// };
-
 export async function getServerSideProps(context) {
-   const res = await axios("http://localhost:3000/api/hero");
-   return {
-      props: { heros: res.data.heros },
-   };
+   try {
+      const res = await axios.get(`${config.baseURL}/hero`);
+      return {
+         props: { heros: res.data.heros },
+      };
+   } catch (error) {
+      return {
+         props: { heros: [] },
+      };
+   }
 }
 
 export default Home;

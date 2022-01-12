@@ -1,13 +1,18 @@
 import mongoose from "mongoose";
+import config from "../config";
 
 const connection = {};
 
 async function dbConnect() {
-   if (connection.isConnected) {
-      return;
+   try {
+      if (connection.isConnected) {
+         return;
+      }
+      const db = await mongoose.connect(config.databaseURI);
+      connection.isConnected = db.connections[0].readyState;
+   } catch (error) {
+      console.log(error);
    }
-   const db = await mongoose.connect(process.env.MONGO_URI);
-   connection.isConnected = db.connections[0].readyState;
 }
 
 export default dbConnect;
