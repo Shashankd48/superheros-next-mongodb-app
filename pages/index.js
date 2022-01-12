@@ -16,7 +16,7 @@ function Home({ heros = [] }) {
    return (
       <Fragment>
          <Header title="Superheros Identity" />
-         <div className="container m-auto w-85">
+         <div className="container m-auto">
             <h3 className="text-center mt-4">Superhero Identity Manager</h3>
             <div>
                <MDBRow>
