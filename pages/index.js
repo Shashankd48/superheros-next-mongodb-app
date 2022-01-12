@@ -10,10 +10,23 @@ import {
 } from "mdb-react-ui-kit";
 import axios from "axios";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import config from "../config";
+import { getHeros, getHeros2 } from "../actions/HeroActions";
 
 function Home({ heros = [] }) {
+   useEffect(() => {
+      getHeros().then((data) => console.log("log: data", data));
+   }, []);
+
+   const NotFound = () => {
+      return (
+         <div className="mt-5">
+            <h4 className="text-center mt-5">No Heros Added Yet!</h4>
+         </div>
+      );
+   };
+
    return (
       <Fragment>
          <Header title="Superheros Identity" />
@@ -21,7 +34,7 @@ function Home({ heros = [] }) {
             <h3 className="text-center mt-4">Superhero Identity Manager</h3>
             <div>
                <MDBRow>
-                  {heros.length > 0 &&
+                  {heros.length > 0 ? (
                      heros.map((hero) => (
                         <MDBCol key={hero._id} lg={4} md={6} sm={12}>
                            <MDBCard
@@ -46,7 +59,10 @@ function Home({ heros = [] }) {
                               </MDBCardBody>
                            </MDBCard>
                         </MDBCol>
-                     ))}
+                     ))
+                  ) : (
+                     <NotFound />
+                  )}
                </MDBRow>
             </div>
          </div>
@@ -55,16 +71,12 @@ function Home({ heros = [] }) {
 }
 
 export async function getServerSideProps(context) {
-   try {
-      const res = await axios.get(`${config.baseURL}/hero`);
-      return {
-         props: { heros: res.data.heros },
-      };
-   } catch (error) {
-      return {
-         props: { heros: [] },
-      };
-   }
+   const data = await getHeros();
+   const heros = data && !data.error ? data.heros : [];
+
+   return {
+      props: { heros },
+   };
 }
 
 export default Home;
