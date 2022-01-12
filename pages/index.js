@@ -81,6 +81,8 @@ export async function getServerSideProps(context) {
    //    props: { heros },
    // };
    try {
+      console.log("log: baseInSSR");
+      console.log(`${config.baseURL}/hero`);
       const res = await axios.get(`${config.baseURL}/hero`);
       return {
          props: { heros: res.data.heros },
