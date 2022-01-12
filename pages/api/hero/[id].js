@@ -22,6 +22,7 @@ export default async (req, res) => {
                     .status(400)
                     .json({ error: true, message: "Hero not found!", hero });
          } catch (error) {
+            console.log(error);
             return res
                .status(500)
                .json({ error: true, message: "Somthing went wrong!" });
@@ -29,7 +30,7 @@ export default async (req, res) => {
 
       case "PUT":
          try {
-            const hero = await HeroSchema.findByIdAndDelete(id, req.body, {
+            const hero = await HeroSchema.findByIdAndUpdate(id, req.body, {
                new: true,
                runValidators: true,
             });
@@ -42,6 +43,7 @@ export default async (req, res) => {
                     hero,
                  });
          } catch (error) {
+            console.log(error);
             return res
                .status(500)
                .json({ error: true, message: "Somthing went wrong!" });
@@ -65,6 +67,6 @@ export default async (req, res) => {
          }
 
       default:
-         break;
+         return res.status(404).json({ error: true, message: "Not found!" });
    }
 };
