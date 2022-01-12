@@ -15,6 +15,8 @@ import config from "../config";
 import { getHeros, getHeros2 } from "../actions/HeroActions";
 
 function Home({ heros = [] }) {
+   console.log("log: heros", heros);
+
    useEffect(() => {
       getHeros().then((data) => console.log("log: data", data));
    }, []);
