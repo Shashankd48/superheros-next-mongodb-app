@@ -33,7 +33,7 @@ function Home({ heros = [] }) {
                                  <Link href={`${hero._id}`}>
                                     <MDBBtn>View Hero</MDBBtn>
                                  </Link>
-                                 <Link href="/">
+                                 <Link href={`${hero._id}/edit`}>
                                     <MDBBtn
                                        color="warning"
                                        size="small"

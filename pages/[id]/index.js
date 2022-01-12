@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import {
    MDBCard,
    MDBCardBody,
@@ -9,7 +9,7 @@ import {
 } from "mdb-react-ui-kit";
 import axios from "axios";
 import Link from "next/link";
-import config from "../config";
+import config from "../../config";
 import { useRouter } from "next/router";
 
 const ViewHero = ({ hero }) => {
@@ -40,12 +40,7 @@ const ViewHero = ({ hero }) => {
                   <MDBCardBody>
                      <MDBCardTitle>{hero.superHero}</MDBCardTitle>
                      <MDBCardText>{hero.realName}</MDBCardText>
-                     <MDBBtn color="warning">Edit</MDBBtn>
-                     <MDBBtn
-                        color="danger"
-                        className="mx-3"
-                        onClick={deleteHero}
-                     >
+                     <MDBBtn color="danger" size="sm" onClick={deleteHero}>
                         Delete
                      </MDBBtn>
                   </MDBCardBody>
