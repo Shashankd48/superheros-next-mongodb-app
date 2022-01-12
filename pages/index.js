@@ -71,13 +71,23 @@ function Home({ heros = [] }) {
 }
 
 export async function getServerSideProps(context) {
-   const data = await getHeros();
-   console.log("log: Data", data);
-   const heros = data && !data.error ? data.heros : [];
+   // const data = await getHeros();
+   // console.log("log: Data", data);
+   // const heros = data && !data.error ? data.heros : [];
 
-   return {
-      props: { heros },
-   };
+   // return {
+   //    props: { heros },
+   // };
+   try {
+      const res = await axios.get(`${config.baseURL}/hero`);
+      return {
+         props: { heros: res.data.heros },
+      };
+   } catch (error) {
+      return {
+         props: { heros: [] },
+      };
+   }
 }
 
 export default Home;
