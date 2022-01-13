@@ -3,6 +3,7 @@ import { MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import Router from "next/router";
 import { Fragment, useState } from "react";
 import { addHero } from "../actions/HeroActions";
+import { toast } from "react-toastify";
 
 const AddHero = () => {
    const [heroData, setHeroData] = useState({
@@ -16,8 +17,16 @@ const AddHero = () => {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
+      if (heroData.superHero === "" || heroData.realName === "")
+         return toast.error("Please fill both the fields");
+
       const data = await addHero(heroData.superHero, heroData.realName);
-      if (!data.error) Router.push("/");
+      if (!data || data?.error) {
+         toast.error(data?.error ? data.message : "Somthing went wrong");
+         return;
+      }
+      toast.success(`${data.hero.superHero} added!`);
+      Router.push("/");
    };
 
    return (
@@ -34,6 +43,7 @@ const AddHero = () => {
                      name="superHero"
                      value={heroData.superHero}
                      className="mb-3"
+                     required
                   />
                   <MDBInput
                      onChange={handleChange}
@@ -42,6 +52,7 @@ const AddHero = () => {
                      name="realName"
                      value={heroData.realName}
                      className="mb-3"
+                     required
                   />
 
                   <MDBBtn type="submit">Add New Hero</MDBBtn>

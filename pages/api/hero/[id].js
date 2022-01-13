@@ -43,7 +43,6 @@ export default async (req, res) => {
                     hero,
                  });
          } catch (error) {
-            console.log(error);
             return res
                .status(500)
                .json({ error: true, message: "Somthing went wrong!" });

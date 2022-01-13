@@ -9,6 +9,7 @@ import {
 } from "mdb-react-ui-kit";
 import { useRouter } from "next/router";
 import { deleteHero, getHeroById } from "../../actions/HeroActions";
+import { toast } from "react-toastify";
 
 const ViewHero = ({ hero }) => {
    const router = useRouter();
@@ -16,14 +17,20 @@ const ViewHero = ({ hero }) => {
 
    const _deleteHero = async () => {
       if (heroId) {
-         const deletedHero = await deleteHero(heroId);
+         const data = await deleteHero(heroId);
+         if (!data || data?.error) {
+            toast.error(data?.error ? data.message : "Somthing went wrong");
+            return;
+         }
+         toast.success(`${hero.superHero} deleted!`);
          router.push("/");
       }
    };
 
    return (
       <Fragment>
-         <Header title="Superheros Identity" />
+         {hero && <Header title={`${hero.superHero} Profile`} />}
+
          <div className="container">
             <h4 className="text-center mt-4">Identity of Hero</h4>
             {hero && (
