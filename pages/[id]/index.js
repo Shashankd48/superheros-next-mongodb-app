@@ -8,15 +8,13 @@ import {
    MDBBtn,
 } from "mdb-react-ui-kit";
 import axios from "axios";
-import Link from "next/link";
 import config from "../../config";
 import { useRouter } from "next/router";
+import { getHeroById } from "../../actions/HeroActions";
 
 const ViewHero = ({ hero }) => {
    const router = useRouter();
    const heroId = router.query.id;
-
-   console.log(heroId);
 
    const deleteHero = async () => {
       if (heroId) {
@@ -52,16 +50,23 @@ const ViewHero = ({ hero }) => {
 };
 
 export async function getServerSideProps(context) {
-   try {
-      const res = await axios(`${config.baseURL}/hero/${context.params.id}`);
-      return {
-         props: { hero: res.data.hero },
-      };
-   } catch (error) {
-      return {
-         props: { hero: null },
-      };
-   }
+   const data = await getHeroById(context.params.id);
+   const hero = data && !data.error ? data.hero : null;
+
+   return {
+      props: { hero },
+   };
+
+   // try {
+   //    const res = await axios(`${config.baseURL}/hero/${context.params.id}`);
+   //    return {
+   //       props: { hero: res.data.hero },
+   //    };
+   // } catch (error) {
+   //    return {
+   //       props: { hero: null },
+   //    };
+   // }
 }
 
 export default ViewHero;

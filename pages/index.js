@@ -8,19 +8,11 @@ import {
    MDBRow,
    MDBCol,
 } from "mdb-react-ui-kit";
-import axios from "axios";
 import Link from "next/link";
-import { Fragment, useEffect } from "react";
-import config from "../config";
-import { getHeros, getHeros2 } from "../actions/HeroActions";
+import { Fragment } from "react";
+import { getHeros } from "../actions/HeroActions";
 
 function Home({ heros = [] }) {
-   console.log("log: heros", heros);
-
-   useEffect(() => {
-      getHeros().then((data) => console.log("log: data", data));
-   }, []);
-
    const NotFound = () => {
       return (
          <div className="mt-5">
@@ -31,7 +23,7 @@ function Home({ heros = [] }) {
 
    return (
       <Fragment>
-         <Header title="Superheros Identity" />
+         <Header title="Superheroes Identity" />
          <div className="container m-auto">
             <h3 className="text-center mt-4">Superhero Identity Manager</h3>
             <div>
@@ -74,24 +66,11 @@ function Home({ heros = [] }) {
 
 export async function getServerSideProps(context) {
    const data = await getHeros();
-   console.log("log: Data", data);
    const heros = data && !data.error ? data.heros : [];
 
    return {
       props: { heros },
    };
-   // try {
-   //    console.log("log: baseInSSR");
-   //    console.log(`${config.baseURL}/hero`);
-   //    const res = await axios.get(`${config.baseURL}/hero`);
-   //    return {
-   //       props: { heros: res.data.heros },
-   //    };
-   // } catch (error) {
-   //    return {
-   //       props: { heros: [] },
-   //    };
-   // }
 }
 
 export default Home;
