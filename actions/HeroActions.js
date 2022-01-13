@@ -22,3 +22,25 @@ export function getHeroById(id) {
          return error.response.data;
       });
 }
+
+export function deleteHero(id) {
+   let request = axios.delete(`${baseURL}/hero/${id}`);
+   return request
+      .then((result) => {
+         return result.data;
+      })
+      .catch((error) => {
+         return error.response.data;
+      });
+}
+
+export function addHero(superHero, realName) {
+   let request = axios.post(`${baseURL}/hero`, { superHero, realName });
+   return request
+      .then((result) => {
+         return result.data;
+      })
+      .catch((error) => {
+         return error.response.data;
+      });
+}

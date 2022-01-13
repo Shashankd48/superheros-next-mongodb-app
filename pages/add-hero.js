@@ -1,10 +1,8 @@
 import Header from "../components/Header";
 import { MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import axios from "axios";
-import Link from "next/link";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 import { Fragment, useState } from "react";
-import config from "../config";
+import { addHero } from "../actions/HeroActions";
 
 const AddHero = () => {
    const [heroData, setHeroData] = useState({
@@ -19,13 +17,11 @@ const AddHero = () => {
    const handleSubmit = async (event) => {
       event.preventDefault();
       try {
-         const res = await axios.post(`${config.baseURL}/hero`, {
-            ...heroData,
-         });
+         const data = await addHero(heroData.superHero, heroData.realName);
 
-         if (res.status == 200) Router.push("/");
+         if (!data.error) Router.push("/");
       } catch (error) {
-         console.log("Error: ", error.response.data);
+         console.log("Error: ", error);
       }
    };
 

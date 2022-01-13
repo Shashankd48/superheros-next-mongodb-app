@@ -10,16 +10,19 @@ import {
 import axios from "axios";
 import config from "../../config";
 import { useRouter } from "next/router";
-import { getHeroById } from "../../actions/HeroActions";
+import { deleteHero, getHeroById } from "../../actions/HeroActions";
 
 const ViewHero = ({ hero }) => {
    const router = useRouter();
    const heroId = router.query.id;
 
-   const deleteHero = async () => {
+   const _deleteHero = async () => {
       if (heroId) {
          try {
-            await axios.delete(`${config.baseURL}/hero/${heroId}`);
+            // await deleteHero (await axios.delete(
+            //    `${config.baseURL}/hero/${heroId}`
+            // ));
+            const deletedHero = await deleteHero(heroId);
             router.push("/");
          } catch (error) {}
       }
@@ -38,7 +41,7 @@ const ViewHero = ({ hero }) => {
                   <MDBCardBody>
                      <MDBCardTitle>{hero.superHero}</MDBCardTitle>
                      <MDBCardText>{hero.realName}</MDBCardText>
-                     <MDBBtn color="danger" size="sm" onClick={deleteHero}>
+                     <MDBBtn color="danger" size="sm" onClick={_deleteHero}>
                         Delete
                      </MDBBtn>
                   </MDBCardBody>
@@ -56,17 +59,6 @@ export async function getServerSideProps(context) {
    return {
       props: { hero },
    };
-
-   // try {
-   //    const res = await axios(`${config.baseURL}/hero/${context.params.id}`);
-   //    return {
-   //       props: { hero: res.data.hero },
-   //    };
-   // } catch (error) {
-   //    return {
-   //       props: { hero: null },
-   //    };
-   // }
 }
 
 export default ViewHero;
