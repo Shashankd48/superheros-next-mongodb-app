@@ -16,13 +16,8 @@ const AddHero = () => {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-      try {
-         const data = await addHero(heroData.superHero, heroData.realName);
-
-         if (!data.error) Router.push("/");
-      } catch (error) {
-         console.log("Error: ", error);
-      }
+      const data = await addHero(heroData.superHero, heroData.realName);
+      if (!data.error) Router.push("/");
    };
 
    return (

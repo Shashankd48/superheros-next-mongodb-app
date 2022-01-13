@@ -7,8 +7,6 @@ import {
    MDBCardText,
    MDBBtn,
 } from "mdb-react-ui-kit";
-import axios from "axios";
-import config from "../../config";
 import { useRouter } from "next/router";
 import { deleteHero, getHeroById } from "../../actions/HeroActions";
 
@@ -18,13 +16,8 @@ const ViewHero = ({ hero }) => {
 
    const _deleteHero = async () => {
       if (heroId) {
-         try {
-            // await deleteHero (await axios.delete(
-            //    `${config.baseURL}/hero/${heroId}`
-            // ));
-            const deletedHero = await deleteHero(heroId);
-            router.push("/");
-         } catch (error) {}
+         const deletedHero = await deleteHero(heroId);
+         router.push("/");
       }
    };
 

@@ -44,3 +44,14 @@ export function addHero(superHero, realName) {
          return error.response.data;
       });
 }
+
+export function updateHero(id, superHero, realName) {
+   let request = axios.put(`${baseURL}/hero/${id}`, { superHero, realName });
+   return request
+      .then((result) => {
+         return result.data;
+      })
+      .catch((error) => {
+         return error.response.data;
+      });
+}

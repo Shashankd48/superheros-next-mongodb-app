@@ -1,9 +1,8 @@
 import Header from "../../components/Header";
 import { MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import axios from "axios";
 import Router from "next/router";
 import { Fragment, useState } from "react";
-import config from "../../config";
+import { getHeroById, updateHero } from "../../actions/HeroActions";
 
 const EditHero = ({ hero }) => {
    const [heroData, setHeroData] = useState({
@@ -17,15 +16,13 @@ const EditHero = ({ hero }) => {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-      try {
-         const res = await axios.put(`${config.baseURL}/hero/${hero._id}`, {
-            ...heroData,
-         });
+      const data = await updateHero(
+         hero._id,
+         heroData.superHero,
+         heroData.realName
+      );
 
-         if (res.status == 200) Router.push("/");
-      } catch (error) {
-         console.log("Error: ", error.response.data);
-      }
+      if (!data.error) Router.push("/");
    };
 
    return (
@@ -61,16 +58,12 @@ const EditHero = ({ hero }) => {
 };
 
 export async function getServerSideProps(context) {
-   try {
-      const res = await axios(`${config.baseURL}/hero/${context.params.id}`);
-      return {
-         props: { hero: res.data.hero },
-      };
-   } catch (error) {
-      return {
-         props: { hero: null },
-      };
-   }
+   const data = await getHeroById(context.params.id);
+   const hero = data && !data.error ? data.hero : null;
+
+   return {
+      props: { hero },
+   };
 }
 
 export default EditHero;
